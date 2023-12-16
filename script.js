@@ -24,24 +24,21 @@ function edit(is_edit) {
 }
 
 function load() {
-  let u = new URL(location.toString());
   try {
-    data = u.searchParams.get("d").split(",").map(Number);
-    LZMA.decompress(data, function (d, e) {
+    let hash = location.hash.slice(1).split(",").map(Number);
+    LZMA.decompress(hash, function (d, e) {
       if (e) {
         console.error(e);
       }
 
-      d = JSON.parse(d);
+      let parts = d.split("|");
 
-      size = d.size;
-
+      size = Number(parts.splice(0, 1));
       generate();
 
-      console.log(d);
       Array.from(main.children).forEach((n, i) => {
-        n.innerText = d.nodes[i].text;
-        n.toggleAttribute("checked", d.nodes[i].checked);
+        n.innerText = parts[i * 2];
+        n.toggleAttribute("checked", parts[i * 2 + 1] == "1");
       });
     });
   } catch (e) {
@@ -50,23 +47,15 @@ function load() {
 }
 
 function save() {
-  let data = JSON.stringify({
-    size: size,
-    nodes: Array.from(main.children).map((n) => {
-      return {
-        text: n.innerText,
-        checked: n.getAttribute("checked") === "",
-      };
-    }),
-  });
+  let data = `${size}|${Array.from(main.children)
+    .map((n) => `${n.innerText}|${n.getAttribute("checked") === "" ? "1" : ""}`)
+    .join("|")}`;
 
-  LZMA.compress(data, 9, function (compressed, e) {
+  LZMA.compress(data, 9, function (c, e) {
     if (e) {
       console.error(e);
     }
-    let u = new URL(location.toString());
-    u.searchParams.set("d", compressed);
-    history.pushState(null, "", u.toString());
+    location.hash = `#${c}`;
   });
 }
 
