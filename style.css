@@ -1,0 +1,29 @@
+:root{
+    --size: 5;
+}
+
+#main {
+    display: grid;
+    gap: 2px;
+    grid-template-columns: repeat(var(--size), 1fr);
+}
+
+#main span{
+    background-color: rgba(0,0,0, 0.1);
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main span[checked]::before {
+    content: "✅";
+    font-size: 4em;
+    z-index: -1;
+    position: absolute;
+    opacity: 10%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

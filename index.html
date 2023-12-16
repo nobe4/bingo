@@ -5,42 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <h1>Bingo!</h1>
 
-    <main></main>
-
-    <details>
+    <details open onclick="edit(!this.open)">
         <summary>Edit</summary>
-        <input type="number" max=10 min=3 name="size" onchange="resize(this.value)">
+        <label for="size">size</label>
+        <input type="number" max=10 value=5 min=3 name="size" onchange="resize(this.value)">
+        <div id="inputs"></div>
     </details>
+
+    <main id="main"></main>
 
     <input type="text" onchange="test(this.value)">
     <p id="result"></p>
 
     <script src="./lzma_worker-min.js"></script>
-    <script>
-        let data = {
-            size: 5,
-        };
-
-        function resize(s) {
-            data.size = s;
-            generate_cells();
-        }
-
-        function generate_cells() {
-            console.error("TODO")
-        }
-
-        function test(v) {
-            LZMA.compress(v, 9, function (compressed, error) {
-                result.innerText = compressed
-            })
-        }
-    </script>
+    <script src="./script.js"></script>
 </body>
 
 </html>
