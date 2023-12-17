@@ -48,17 +48,33 @@ header details summary{
     overflow: hidden;
 }
 
-#main span[contenteditable=true]{
-    border: 1px solid blue;
-}
-
-#main span[checked]::before {
+#main span::before {
     content: "✅";
     font-size: 15em;
     z-index: -1;
     position: absolute;
-    opacity: 10%;
+    opacity: 0%;
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+#main span[contenteditable=true]{
+    border: 1px solid blue;
+}
+
+#main span[contenteditable=false]{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+#main span[checked][contenteditable=false]:hover::before,
+#main span[checked][contenteditable=false]::before {
+    opacity: 20%;
+}
+#main span[contenteditable=false]:hover::before{
+    opacity: 10%;
 }
