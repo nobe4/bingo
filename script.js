@@ -1,13 +1,12 @@
-let size = 5;
 let is_edit = false;
 let separator = "";
 
 function generate(s) {
-  size = s;
-  document.documentElement.style.setProperty("--size", size);
+  size.value = s;
+  document.documentElement.style.setProperty("--size", size.value);
   main.innerHTML = "";
-  for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size; j++) {
+  for (let i = 0; i < size.value; i++) {
+    for (let j = 0; j < size.value; j++) {
       let node = document.createElement("span");
       main.appendChild(node);
     }
@@ -25,7 +24,7 @@ function edit(e) {
 
 function load() {
   if (location.hash == "") {
-    return generate(size);
+    return generate(size.value);
   }
 
   let hash = location.hash.slice(1).split(",").map(Number);
@@ -44,7 +43,7 @@ function load() {
 }
 
 function save() {
-  let data = [size]
+  let data = [size.value]
     .concat(Array.from(main.children).map((n) => n.innerText))
     .join(separator);
 
