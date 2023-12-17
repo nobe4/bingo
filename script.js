@@ -1,4 +1,5 @@
 let size = 5;
+let is_edit = false;
 let separator = "";
 
 function generate(s) {
@@ -11,10 +12,11 @@ function generate(s) {
       main.appendChild(node);
     }
   }
-  edit(false);
+  edit(is_edit);
 }
 
-function edit(is_edit) {
+function edit(e) {
+  is_edit = e;
   Array.from(main.children).forEach((n) => {
     n.contentEditable = is_edit;
     n.onclick = is_edit ? undefined : () => n.toggleAttribute("checked");
