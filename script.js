@@ -1,11 +1,8 @@
 let size = 5;
+let separator = "";
 
-function resize(s) {
+function generate(s) {
   size = s;
-  generate();
-}
-
-function generate() {
   document.documentElement.style.setProperty("--size", size);
   main.innerHTML = "";
   for (let i = 0; i < size; i++) {
@@ -14,6 +11,7 @@ function generate() {
       main.appendChild(node);
     }
   }
+  edit(false);
 }
 
 function edit(is_edit) {
@@ -24,32 +22,29 @@ function edit(is_edit) {
 }
 
 function load() {
-  try {
-    let hash = location.hash.slice(1).split(",").map(Number);
-    LZMA.decompress(hash, function (d, e) {
-      if (e) {
-        console.error(e);
-      }
-
-      let parts = d.split("|");
-
-      size = Number(parts.splice(0, 1));
-      generate();
-
-      Array.from(main.children).forEach((n, i) => {
-        n.innerText = parts[i * 2];
-        n.toggleAttribute("checked", parts[i * 2 + 1] == "1");
-      });
-    });
-  } catch (e) {
-    console.warn(e);
+  if (location.hash == "") {
+    return generate(size);
   }
+
+  let hash = location.hash.slice(1).split(",").map(Number);
+  LZMA.decompress(hash, function (d, e) {
+    if (e) {
+      console.error(e);
+    }
+
+    let parts = d.split(separator);
+
+    generate(Number(parts.splice(0, 1)));
+    Array.from(main.children).forEach((n, i) => {
+      n.innerText = parts[i];
+    });
+  });
 }
 
 function save() {
-  let data = `${size}|${Array.from(main.children)
-    .map((n) => `${n.innerText}|${n.getAttribute("checked") === "" ? "1" : ""}`)
-    .join("|")}`;
+  let data = [size]
+    .concat(Array.from(main.children).map((n) => n.innerText))
+    .join(separator);
 
   LZMA.compress(data, 9, function (c, e) {
     if (e) {
@@ -59,5 +54,4 @@ function save() {
   });
 }
 
-generate();
-edit(true);
+load();

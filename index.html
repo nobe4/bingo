@@ -9,20 +9,20 @@
 </head>
 
 <body>
-    <h1>Bingo!</h1>
+    <header>
+        <h1>
+            Bingo
+        </h1>
 
-    <details open onclick="edit(!this.open)">
-        <summary>Edit</summary>
-        <label for="size">size</label>
-        <input type="number" max=10 value=5 min=3 name="size" onchange="resize(this.value)">
-        <div id="inputs"></div>
-    </details>
-
-    <button onclick="save()">save</button>
-    <button onclick="load()">load</button>
+        <details onclick="edit(!this.open)">
+            <summary>⚙️</summary>
+            <label for="size">Size</label>
+            <input type="number" max=10 value=5 min=3 id="size" onchange="generate(this.value)">
+            <button onclick="save()">save</button>
+        </details>
+    </header>
 
     <main id="main"></main>
-
 
     <script src="./lzma_worker-min.js"></script>
     <script src="./script.js"></script>
