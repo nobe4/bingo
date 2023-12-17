@@ -48,6 +48,10 @@ header details summary{
     overflow: hidden;
 }
 
+#main span[contenteditable=true]{
+    border: 1px solid blue;
+}
+
 #main span[checked]::before {
     content: "✅";
     font-size: 15em;
