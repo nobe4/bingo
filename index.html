@@ -14,7 +14,7 @@
             Bingo
         </h1>
 
-        <details onclick="edit(!this.open)">
+        <details ontoggle="edit(this.open)">
             <summary>⚙️</summary>
             <label for="size">Size</label>
             <input type="number" max=10 value=5 min=3 id="size" onchange="generate(this.value)">
