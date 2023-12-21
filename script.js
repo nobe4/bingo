@@ -22,24 +22,34 @@ function edit(e) {
   });
 }
 
+function load_pantry(hash) {}
+
 function load() {
   if (location.hash == "") {
     return generate(size.value);
   }
 
-  let hash = location.hash.slice(1).split(",").map(Number);
-  LZMA.decompress(hash, function (d, e) {
-    if (e) {
-      console.error(e);
-    }
+  let hash = location.hash.slice(1);
 
-    let parts = d.split(separator);
+  fetch(`https://getpantry.cloud/apiv1/pantry/${hash}`)
+    .then((response) => response.json())
+    .then((content) => console.log(content))
+    .catch((error) => {
+      console.error(error);
+      hash = hash.split(",").map(Number);
+      LZMA.decompress(hash, function (d, e) {
+        if (e) {
+          console.error(e);
+        }
 
-    generate(Number(parts.splice(0, 1)));
-    Array.from(main.children).forEach((n, i) => {
-      n.innerText = parts[i];
+        let parts = d.split(separator);
+
+        generate(Number(parts.splice(0, 1)));
+        Array.from(main.children).forEach((n, i) => {
+          n.innerText = parts[i];
+        });
+      });
     });
-  });
 }
 
 function save() {
